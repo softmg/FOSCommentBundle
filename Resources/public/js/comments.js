@@ -161,6 +161,8 @@
                 function(e) {
                     var form_data = $(this).data();
                     var that = $(this);
+                    var parent = $('#fos_comment_'+that.attr('data-parent-id'));
+                    var container_in = parent.find('> .fos_comment_comment_reply');
 
                     if(that.closest('.fos_comment_comment_reply').hasClass('fos_comment_replying')) {
                         return that;
@@ -170,8 +172,8 @@
                         form_data.url,
                         {parentId: form_data.parentId},
                         function(data) {
-                            that.closest('.fos_comment_comment_reply').addClass('fos_comment_replying');
-                            that.after(data);
+                            container_in.addClass('fos_comment_replying');
+                            container_in.html(data);
                             that.trigger('fos_comment_show_form', data);
                         }
                     );
@@ -182,6 +184,7 @@
                 '.fos_comment_comment_reply_cancel',
                 function(e) {
                     var form_holder = $(this).closest('.fos_comment_comment_form_holder');
+                    var container_in = $(this).parents('.fos_comment_comment_reply');
 
                     var event = $.Event('fos_comment_cancel_form');
                     form_holder.trigger(event);
@@ -190,7 +193,7 @@
                         return;
                     }
 
-                    form_holder.closest('.fos_comment_comment_reply').removeClass('fos_comment_replying');
+                    container_in.removeClass('fos_comment_replying');
                     form_holder.remove();
                 }
             );
